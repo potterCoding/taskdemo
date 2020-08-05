@@ -1,6 +1,7 @@
 package com.reminis.taskdemo.task;
 
 import com.reminis.taskdemo.config.CronTaskRegistrar;
+import com.reminis.taskdemo.enums.SysJobStatus;
 import com.reminis.taskdemo.po.SysJobPO;
 import com.reminis.taskdemo.thread.SchedulingRunnable;
 import org.junit.Before;
@@ -72,6 +73,16 @@ public class AddAndRemoveTest {
     }
 
     //定时任务启动/停止状态切换
+    public void testStart(){
+        // 先找是否有该任务
 
+        if (sysJobPO.getJobStatus().equals(SysJobStatus.NORMAL.ordinal())) {
+            SchedulingRunnable task = new SchedulingRunnable(sysJobPO.getBeanName(), sysJobPO.getMethodName(), sysJobPO.getMethodParams());
+            cronTaskRegistrar.addCronTask(task, sysJobPO.getCronExpression());
+        } else {
+            SchedulingRunnable task = new SchedulingRunnable(sysJobPO.getBeanName(), sysJobPO.getMethodName(), sysJobPO.getMethodParams());
+            cronTaskRegistrar.removeCronTask(task);
+        }
+    }
 
 }
